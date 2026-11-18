@@ -193,6 +193,28 @@ class CommandRegistry {
         context.registerCommand(command, permission)
     }
 
+    fun registerWithArgs(
+        context: Context,
+        command: Command,
+        permission: String,
+        rootHandler: (CommandSender, Server, ConsumedArgs) -> Int,
+        argsHandler: (CommandSender, Server, ConsumedArgs) -> Int,
+    ) {
+        val rootId = nextId++
+        val argsId = nextId++
+        handlers[rootId] = { sender, server, args -> Result.success(rootHandler(sender, server, args)) }
+        handlers[argsId] = { sender, server, args -> Result.success(argsHandler(sender, server, args)) }
+
+        command.executeWithHandlerId(rootId)
+        val argsNode = CommandNode.argument(
+            "args",
+            pumpkin.Command.ArgumentType.String(pumpkin.Command.StringType.GREEDY),
+        )
+        argsNode.executeWithHandlerId(argsId)
+        command.then(argsNode)
+        context.registerCommand(command, permission)
+    }
+
     fun onSuggestions(
         node: CommandNode,
         handler: (CommandSender, Server, SuggestionRequest) -> CommandSuggestions,

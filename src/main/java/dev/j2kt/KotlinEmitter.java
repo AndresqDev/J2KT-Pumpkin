@@ -2415,6 +2415,12 @@ public final class KotlinEmitter {
                 .map(value -> emitExpression(value, null)).toList();
         String argsText = String.join(", ", args);
 
+        if (target == Target.PUMPKIN && name.equals("asString") && args.isEmpty()) {
+            String command = imports.ref("pumpkin.Command");
+            return "when (val arg = " + scopeText + ") { is " + command + ".Arg.Simple -> arg.value; is "
+                    + command + ".Arg.Msg -> arg.value; else -> \"\" }";
+        }
+
         if (target == Target.PUMPKIN && "ItemStack".equals(scopeText) && name.equals("of")
                 && (args.size() == 1 || args.size() == 2)) {
             String count = args.size() == 1 ? "1" : args.get(1);
