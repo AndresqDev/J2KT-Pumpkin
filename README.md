@@ -139,10 +139,11 @@ test-fixtures/kt/
 libs/pumpkin-stub.jar
 ```
 
-The canonical Java stub is published separately:
+The Java stub and the Bukkit-style abstraction are published separately:
 
 ```text
 https://github.com/AndresqDev/Pumpkin-Stub
+https://github.com/AndresqDev/Pumpkin-Abs
 ```
 
 ## Releases
