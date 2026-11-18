@@ -17,7 +17,7 @@ The script publishes `pumpkin-api-kt` to Maven Local when it is not already pres
 
 It then:
 
-1. Builds the translator and the bundled stub.
+1. Builds the translator and uses the bundled stub JAR.
 2. Translates the Java examples to Kotlin.
 3. Builds both Kotlin/Wasm projects.
 4. Validates the resulting components with the Pumpkin Gradle plugin.
