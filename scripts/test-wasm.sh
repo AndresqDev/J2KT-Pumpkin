@@ -6,7 +6,8 @@ cd "$(dirname "$0")/.."
 API_VERSION="${PUMPKIN_API_VERSION:-0.1.2}"
 export PUMPKIN_API_VERSION="$API_VERSION"
 API_DIR="${PUMPKIN_API_KT_DIR:-/tmp/opencode/pumpkin-api-kt}"
-TRANSLATOR_JAR="build/libs/j2kt-pumpkin-0.1.0-all.jar"
+VERSION="$(sed -n 's/^version = '\''\(.*\)'\''/\1/p' build.gradle | head -n 1)"
+TRANSLATOR_JAR="build/libs/j2kt-pumpkin-${VERSION}-all.jar"
 
 echo "==> Pumpkin API version: $API_VERSION (latest tagged dev release at the time of writing)"
 
