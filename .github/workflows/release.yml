@@ -1,0 +1,118 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  PUMPKIN_API_VERSION: "0.1.2"
+  WIT_VERSION: "0.1.0"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      api_version: ${{ steps.meta.outputs.api_version }}
+      wit_version: ${{ steps.meta.outputs.wit_version }}
+      asset_name: ${{ steps.meta.outputs.asset_name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Build and test
+        run: |
+          chmod +x gradlew
+          ./gradlew clean test fatJar --console=plain
+
+      - name: Prepare artifact
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          version="${GITHUB_REF_NAME#v}"
+          project_version="$(sed -n "s/^version = '\(.*\)'/\1/p" build.gradle | head -n 1)"
+
+          test -n "$project_version"
+
+          if [ "$version" != "$project_version" ]; then
+            printf 'Tag version %s does not match project version %s\n' "$version" "$project_version" >&2
+            exit 1
+          fi
+
+          asset_name="j2kt-pumpkin-${version}-pumpkin-api-${PUMPKIN_API_VERSION}-wit-${WIT_VERSION}-all.jar"
+          mkdir -p dist
+          cp "build/libs/j2kt-pumpkin-${version}-all.jar" "dist/${asset_name}"
+          (cd dist && sha256sum "${asset_name}" > "${asset_name}.sha256")
+
+          {
+            echo "version=${version}"
+            echo "api_version=${PUMPKIN_API_VERSION}"
+            echo "wit_version=${WIT_VERSION}"
+            echo "asset_name=${asset_name}"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: j2kt-pumpkin-release
+          path: dist/
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: j2kt-pumpkin-release
+          path: dist
+
+      - name: Create release notes
+        shell: bash
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+          API_VERSION: ${{ needs.build.outputs.api_version }}
+          WIT_VERSION: ${{ needs.build.outputs.wit_version }}
+        run: |
+          cat > release-notes.md <<EOF
+          ## J2KT Pumpkin ${VERSION}
+
+          Java-to-Kotlin translator for Pumpkin Kotlin/Wasm plugins.
+
+          - Pumpkin API: ${API_VERSION}
+          - WIT: pumpkin:plugin@${WIT_VERSION}
+          - Java: 21
+
+          Use the JAR with the Java stub and a Pumpkin API 0.1.2 project.
+          Verify the download with the SHA-256 file.
+          EOF
+
+      - name: Publish release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+          API_VERSION: ${{ needs.build.outputs.api_version }}
+          WIT_VERSION: ${{ needs.build.outputs.wit_version }}
+          ASSET_NAME: ${{ needs.build.outputs.asset_name }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/${ASSET_NAME}" \
+            "dist/${ASSET_NAME}.sha256" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "J2KT Pumpkin ${VERSION} (Pumpkin API ${API_VERSION}, WIT ${WIT_VERSION})" \
+            --notes-file release-notes.md

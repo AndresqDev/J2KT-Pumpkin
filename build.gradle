@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'maven-publish'
+}
+
+group = 'dev.j2kt'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.27.0'
+
+    testImplementation platform('org.junit:junit-bom:5.11.4')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation files('libs/pumpkin-stub.jar')
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    mainClass = 'dev.j2kt.Main'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'j2kt-pumpkin'
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    inputs.files(fileTree('examples/wasm') {
+        include '**/*.java'
+    })
+    inputs.files(fileTree('templates/intellij-plugin/java-plugin/src/main/java') {
+        include '**/*.java'
+    })
+}
+
+tasks.register('fatJar', Jar) {
+    group = 'build'
+    description = 'Build a runnable jar containing all dependencies'
+    archiveClassifier = 'all'
+    manifest {
+        attributes 'Main-Class': 'dev.j2kt.Main'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
