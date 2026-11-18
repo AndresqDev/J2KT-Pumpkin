@@ -3440,6 +3440,10 @@ public final class KotlinEmitter {
             return null;
         }
         Expression receiver = call.getScope().orElseThrow();
+        if (receiverType != null && "plugin.PluginMetadata".equals(receiverType.javaName())
+                && name.equals("getName") && args.isEmpty()) {
+            return emitExpression(receiver, null) + ".name";
+        }
         if (receiver instanceof NameExpr receiverName
                 && !receiverName.getNameAsString().isEmpty()
                 && Character.isUpperCase(receiverName.getNameAsString().charAt(0))) {

@@ -609,6 +609,10 @@ public final class TypeMapper {
         if (fq == null) {
             return null;
         }
+        if (fq.equals("pumpkin.Event")) {
+            String eventClass = imports.ref("pumpkin.Event");
+            return KType.simple(eventClass + ".Event", "pumpkin.Event.Event", KType.Category.OBJECT);
+        }
         if (fq.equals("pumpkin.Event.EventType")) {
             String eventClass = imports.ref("pumpkin.Event");
             return KType.simple(eventClass + ".EventType", fq, KType.Category.OBJECT);
