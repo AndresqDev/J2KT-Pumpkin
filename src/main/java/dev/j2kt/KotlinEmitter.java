@@ -2273,6 +2273,11 @@ public final class KotlinEmitter {
             case "EventType" -> imports.ref("pumpkin.Event") + ".EventType";
             case "EventPriority" -> imports.ref("pumpkin.Event") + ".EventPriority";
             case "PermissionDefault" -> imports.ref("pumpkin.Permission") + ".PermissionDefault";
+            case "Particles" -> imports.ref("pumpkin.Particles");
+            case "Particle" -> imports.ref("pumpkin.Particles") + ".Particle";
+            case "Sounds" -> imports.ref("pumpkin.Sounds");
+            case "Sound" -> imports.ref("pumpkin.Sounds") + ".Sound";
+            case "SoundCategory" -> imports.ref("pumpkin.Sounds") + ".SoundCategory";
             default -> null;
         };
     }
@@ -3219,6 +3224,23 @@ public final class KotlinEmitter {
             }
         }
 
+        if (javaName.startsWith("pumpkin.World.Entity")) {
+            switch (name) {
+                case "teleport" -> {
+                    if (args.size() == 2) {
+                        return scopeText + ".teleport(" + args.get(0) + ", " + args.get(1) + ")";
+                    }
+                }
+                case "remove" -> {
+                    if (args.isEmpty()) {
+                        return scopeText + ".remove()";
+                    }
+                }
+                default -> {
+                }
+            }
+        }
+
         if (javaName.startsWith("pumpkin.World.World")) {
             switch (name) {
                 case "getTime" -> { return scopeText + ".getTimeOfDay().toLong()"; }
@@ -3230,6 +3252,48 @@ public final class KotlinEmitter {
                 case "setStorm" -> {
                     if (args.size() == 1) {
                         return scopeText + ".setRaining(" + args.get(0) + ")";
+                    }
+                }
+                case "getBlockStateId" -> {
+                    if (args.size() == 1) {
+                        return scopeText + ".getBlockStateId(" + args.get(0) + ").toInt()";
+                    }
+                }
+                case "setBlockStateId" -> {
+                    if (args.size() == 2) {
+                        return scopeText + ".setBlockState(" + args.get(0)
+                                + ", (" + args.get(1) + ").toUShort(), pumpkin.World.BlockFlags())";
+                    }
+                }
+                case "setBlockByName" -> {
+                    if (args.size() == 2) {
+                        return scopeText + ".setBlockByName(" + args.get(0) + ", "
+                                + args.get(1) + ", pumpkin.World.BlockFlags())";
+                    }
+                }
+                case "spawnParticle" -> {
+                    if (args.size() == 5) {
+                        return scopeText + ".spawnParticle(" + args.get(0) + ", " + args.get(1)
+                                + ", " + args.get(2) + ", (" + args.get(4) + ").toFloat(), "
+                                + args.get(3) + ")";
+                    }
+                }
+                case "playSound" -> {
+                    if (args.size() == 5) {
+                        return scopeText + ".playSound(" + args.get(0) + ", " + args.get(1)
+                                + ", " + args.get(2) + ", " + args.get(3) + ", " + args.get(4) + ")";
+                    }
+                }
+                case "playCustomSound" -> {
+                    if (args.size() == 5) {
+                        return scopeText + ".playCustomSound(" + args.get(0) + ", " + args.get(1)
+                                + ", " + args.get(2) + ", " + args.get(3) + ", " + args.get(4) + ")";
+                    }
+                }
+                case "createExplosion" -> {
+                    if (args.size() == 3) {
+                        return scopeText + ".createExplosion(" + args.get(0) + ", " + args.get(1)
+                                + ", " + args.get(2) + ", pumpkin.World.ExplosionInteraction.TNT)";
                     }
                 }
                 case "getBlockByName" -> {

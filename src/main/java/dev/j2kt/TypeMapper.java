@@ -595,6 +595,11 @@ public final class TypeMapper {
             case "EventPriority" -> "pumpkin.Event.EventPriority";
             case "EventSubscription" -> "plugin.EventSubscription";
             case "PermissionDefault" -> "pumpkin.Permission.PermissionDefault";
+            case "Particles" -> "pumpkin.Particles";
+            case "Particle" -> "pumpkin.Particles.Particle";
+            case "Sounds" -> "pumpkin.Sounds";
+            case "Sound" -> "pumpkin.Sounds.Sound";
+            case "SoundCategory" -> "pumpkin.Sounds.SoundCategory";
             case "Uuid", "UUID" -> "pumpkin.Uuid.Uuid";
             default -> null;
         };

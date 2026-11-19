@@ -15,8 +15,8 @@ Java-to-Kotlin translator for Pumpkin plugins targeting Kotlin/Wasm. It compiles
 
 | Component | Version |
 |---|---|
-| J2KT Pumpkin | 0.1.3 |
-| Pumpkin Stub | 0.1.1 |
+| J2KT Pumpkin | 0.1.4 |
+| Pumpkin Stub | 0.2.0 |
 | Java | 21 |
 | Kotlin | 2.4.0 |
 | Gradle | 9.8.1 |
@@ -41,7 +41,7 @@ The translator targets the synchronous v0.1 WIT ABI. The async `pumpkin:plugin@0
 Output:
 
 ```text
-build/libs/j2kt-pumpkin-0.1.3-all.jar
+build/libs/j2kt-pumpkin-0.1.4-all.jar
 ```
 
 Run the tests:
@@ -63,7 +63,7 @@ The Wasm suite publishes `pumpkin-api-kt` to Maven Local when the artifacts are 
 Translate a Java source tree:
 
 ```bash
-java -jar build/libs/j2kt-pumpkin-0.1.3-all.jar \
+java -jar build/libs/j2kt-pumpkin-0.1.4-all.jar \
   --target pumpkin \
   --classpath libs/pumpkin-stub.jar \
   --out generated \
@@ -157,17 +157,17 @@ Release asset name:
 j2kt-pumpkin-<version>-pumpkin-api-<api-version>-wit-<wit-version>-all.jar
 ```
 
-Example for version `0.1.3`:
+Example for version `0.1.4`:
 
 ```text
-j2kt-pumpkin-0.1.3-pumpkin-api-0.1.2-wit-0.1.0-all.jar
+j2kt-pumpkin-0.1.4-pumpkin-api-0.1.2-wit-0.1.0-all.jar
 ```
 
 Publish a release with:
 
 ```bash
-git tag v0.1.3
-git push origin v0.1.3
+git tag v0.1.4
+git push origin v0.1.4
 ```
 
 ## License
