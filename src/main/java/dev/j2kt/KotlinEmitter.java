@@ -2255,7 +2255,9 @@ public final class KotlinEmitter {
             case "SuggestionRequest" -> imports.ref("pumpkin.Command") + ".SuggestionRequest";
             case "CommandSuggestions" -> imports.ref("pumpkin.Command") + ".CommandSuggestions";
             case "PermissionLevel" -> imports.ref("pumpkin.Command") + ".PermissionLevel";
-            case "IpcRegistry" -> imports.ref("pumpkin.Ipc");
+            case "IpcRegistry" -> imports.ref("plugin.IpcRegistry");
+            case "EventRegistry" -> imports.ref("plugin.EventRegistry");
+            case "CommandRegistry" -> imports.ref("plugin.CommandRegistry");
             case "GameMode" -> imports.ref("pumpkin.Common.GameMode");
             case "Hand" -> imports.ref("pumpkin.Common.Hand");
             case "BlockPos" -> imports.ref("pumpkin.Common.BlockPos");

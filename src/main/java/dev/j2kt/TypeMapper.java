@@ -576,7 +576,9 @@ public final class TypeMapper {
             case "World" -> "pumpkin.World.World";
             case "Entity" -> "pumpkin.World.Entity";
             case "TextComponent" -> "pumpkin.Text.TextComponent";
-            case "IpcRegistry" -> "pumpkin.Ipc";
+            case "IpcRegistry" -> "plugin.IpcRegistry";
+            case "EventRegistry" -> "plugin.EventRegistry";
+            case "CommandRegistry" -> "plugin.CommandRegistry";
             case "GameMode" -> "pumpkin.Common.GameMode";
             case "Hand" -> "pumpkin.Common.Hand";
             case "BlockPos" -> "pumpkin.Common.BlockPos";
