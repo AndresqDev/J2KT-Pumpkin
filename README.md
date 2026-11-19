@@ -16,6 +16,7 @@ Java-to-Kotlin translator for Pumpkin plugins targeting Kotlin/Wasm. It compiles
 | Component | Version |
 |---|---|
 | J2KT Pumpkin | 0.1.2 |
+| Pumpkin Stub | 0.1.1 |
 | Java | 21 |
 | Kotlin | 2.4.0 |
 | Gradle | 9.8.1 |
@@ -91,7 +92,7 @@ The translator covers the Java constructs exercised by the test suite, including
 | Lifecycle and metadata | Supported |
 | Logging and text components | Supported |
 | Events and all 273 event variants | Supported |
-| Commands and handler registration | Supported; typed arguments and suggestions are partial |
+| Commands and handler registration | Supported; raw arguments through Pumpkin Abs; typed arguments and suggestions are partial |
 | Permissions | Supported |
 | Delayed tasks and repeating tasks | Supported through `tasks` and `pumpkin-compat` |
 | IPC | Basic support |
@@ -156,7 +157,7 @@ Release asset name:
 j2kt-pumpkin-<version>-pumpkin-api-<api-version>-wit-<wit-version>-all.jar
 ```
 
-Example for version `0.1.0`:
+Example for version `0.1.2`:
 
 ```text
 j2kt-pumpkin-0.1.2-pumpkin-api-0.1.2-wit-0.1.0-all.jar
@@ -165,8 +166,8 @@ j2kt-pumpkin-0.1.2-pumpkin-api-0.1.2-wit-0.1.0-all.jar
 Publish a release with:
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.2
+git push origin v0.1.2
 ```
 
 ## License

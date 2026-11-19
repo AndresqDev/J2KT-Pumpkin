@@ -62,7 +62,7 @@ The following are not available in Kotlin/Wasm and require replacement or manual
 
 Command registration is supported. The compatibility layer attaches a handler ID before calling `context.registerCommand`. Command permissions must use the plugin metadata namespace.
 
-Typed command arguments and suggestions are only partially mapped. Flat commands are the supported path for the current translator.
+Raw command arguments are supported through the Pumpkin Abs greedy-argument adapter. Typed argument nodes and suggestions remain partially mapped.
 
 ## Pumpkin events and tasks
 
