@@ -3262,13 +3262,13 @@ public final class KotlinEmitter {
                 case "setBlockStateId" -> {
                     if (args.size() == 2) {
                         return scopeText + ".setBlockState(" + args.get(0)
-                                + ", (" + args.get(1) + ").toUShort(), pumpkin.World.BlockFlags())";
+                                + ", (" + args.get(1) + ").toUShort(), pumpkin.World.BlockFlags(true, true, true, false, false, false, false, false))";
                     }
                 }
                 case "setBlockByName" -> {
                     if (args.size() == 2) {
                         return scopeText + ".setBlockByName(" + args.get(0) + ", "
-                                + args.get(1) + ", pumpkin.World.BlockFlags())";
+                                + args.get(1) + ", pumpkin.World.BlockFlags(true, true, true, false, false, false, false, false))";
                     }
                 }
                 case "spawnParticle" -> {

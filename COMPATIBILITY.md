@@ -4,7 +4,7 @@
 
 | Component | Version |
 |---|---|
-| J2KT Pumpkin | 0.1.4 |
+| J2KT Pumpkin | 0.1.5 |
 | Pumpkin Stub | 0.2.0 |
 | Pumpkin Kotlin/Wasm API | 0.1.2 |
 | Pumpkin plugin WIT | `pumpkin:plugin@0.1.0` (synchronous ABI) |
